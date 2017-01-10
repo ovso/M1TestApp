@@ -18,9 +18,14 @@ public class MainPresenterImpl implements MainPresenter {
     private ImageInteractor.OnResultListener mOnImageInteractor = new ImageInteractor.OnResultListener() {
         @DebugLog
         @Override
-        public void onChannel(Channel channel) {
-            mModel.setItemList(channel.item);
-            mView.setRecyclerView(mModel.getItemList());
+        public void onChannel(Channel channel, boolean isUpdate) {
+            if(isUpdate) {
+                mView.updateRecyclerView(channel.item);
+            } else {
+                mView.setRecyclerView(channel.item);
+            }
+
+            mView.hideRefresh();
         }
 
         @Override
@@ -33,12 +38,19 @@ public class MainPresenterImpl implements MainPresenter {
         mView.setRootView();
         mView.setToolbar();
         mView.setDrawerLayout();
-        mInteractor.execute(mModel.getPageCount());
+        mView.setEvent();
+        mInteractor.execute(mModel.getPageCount(), false);
     }
 
     @Override
     public void onRecyclerViewLoadMore() {
         int pageCount = mModel.getPageCount();
-        if(pageCount < 3) mInteractor.execute(pageCount);
+        if(pageCount < 3) mInteractor.execute(pageCount, true);
+    }
+
+    @Override
+    public void onSwipeRefresh() {
+        mView.showRefresh();
+        mInteractor.execute(1, false);
     }
 }

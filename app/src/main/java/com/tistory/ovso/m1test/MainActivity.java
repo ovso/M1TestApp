@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout mRefreshLayout;
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -126,6 +130,34 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void updateRecyclerView(List<Item> item) {
+        RecyclerViewAdapter adapter = (RecyclerViewAdapter) mRecyclerView.getAdapter();
+        adapter.setUpdateList(item);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setEvent() {
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.onSwipeRefresh();
+            }
+        });
+
+    }
+
+    @Override
+    public void showRefresh() {
+        mRefreshLayout.setEnabled(true);
+    }
+
+    @Override
+    public void hideRefresh() {
+        mRefreshLayout.setEnabled(false);
     }
 
     @Override

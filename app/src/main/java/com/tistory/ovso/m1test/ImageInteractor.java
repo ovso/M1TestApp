@@ -14,11 +14,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public class ImageInteractor {
-    //https://apis.daum.net/search/image?apikey={apikey}&q=다음카카오&output=json
-    //flickr.photosets.getPhotos
     private final static String api_key= "49a885dc3636e74c6371aeb1fd49d264";
     private Call<Data> mCall;
-    public void execute(int page) {
+
+    public void execute(int page, final boolean isUpdate) {
 
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -39,7 +38,7 @@ public class ImageInteractor {
             public void onResponse(Call<Data> call, Response<Data> response) {
                 if(response.isSuccessful()) {
                     Data data = response.body();
-                    mOnResultListener.onChannel(data.channel);
+                    mOnResultListener.onChannel(data.channel, isUpdate);
                 } else {
                     mOnResultListener.onFail();
                 }
@@ -69,7 +68,7 @@ public class ImageInteractor {
      * 날씨 연동 결과 수신기
      */
     public interface OnResultListener {
-        void onChannel(Channel channel);
+        void onChannel(Channel channel, boolean isUpdate);
         void onFail();
     }
     //search/image

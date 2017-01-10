@@ -10,6 +10,8 @@ public interface MainPresenter {
 
     void onRecyclerViewLoadMore();
 
+    void onSwipeRefresh();
+
     interface View {
 
         void setRecyclerView(List<Item> items);
@@ -19,5 +21,13 @@ public interface MainPresenter {
         void setToolbar();
 
         void setDrawerLayout();
+
+        void updateRecyclerView(List<Item> item);
+
+        void setEvent();
+
+        void showRefresh();
+
+        void hideRefresh();
     }
 }
