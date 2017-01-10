@@ -1,13 +1,7 @@
 package com.tistory.ovso.m1test;
 
-import com.aetrion.flickr.Flickr;
-import com.aetrion.flickr.REST;
-import com.aetrion.flickr.test.TestInterface;
 import com.tistory.ovso.m1test.model.Channel;
 import com.tistory.ovso.m1test.model.Data;
-
-import java.util.Collection;
-import java.util.Collections;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -24,7 +18,7 @@ public class ImageInteractor {
     //flickr.photosets.getPhotos
     private final static String api_key= "49a885dc3636e74c6371aeb1fd49d264";
     private Call<Data> mCall;
-    public void execute() {
+    public void execute(int page) {
 
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -38,7 +32,7 @@ public class ImageInteractor {
 
         Service service = retrofit.create(Service.class);
         mCall = service.create(
-                api_key, "영화", 1, 18, "json"
+                api_key, "영화", page, 18, "json"
         );
         mCall.enqueue(new Callback<Data>() {
             @Override

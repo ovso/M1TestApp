@@ -8,6 +8,8 @@ public interface MainPresenter {
 
     void onCreate();
 
+    void onRecyclerViewLoadMore();
+
     interface View {
 
         void setRecyclerView(List<Item> items);

@@ -19,7 +19,8 @@ public class MainPresenterImpl implements MainPresenter {
         @DebugLog
         @Override
         public void onChannel(Channel channel) {
-            mView.setRecyclerView(channel.item);
+            mModel.setItemList(channel.item);
+            mView.setRecyclerView(mModel.getItemList());
         }
 
         @Override
@@ -32,6 +33,12 @@ public class MainPresenterImpl implements MainPresenter {
         mView.setRootView();
         mView.setToolbar();
         mView.setDrawerLayout();
-        mInteractor.execute();
+        mInteractor.execute(mModel.getPageCount());
+    }
+
+    @Override
+    public void onRecyclerViewLoadMore() {
+        int pageCount = mModel.getPageCount();
+        if(pageCount < 3) mInteractor.execute(pageCount);
     }
 }

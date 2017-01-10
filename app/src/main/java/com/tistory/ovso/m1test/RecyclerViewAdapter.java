@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.tistory.ovso.m1test.model.Item;
@@ -15,8 +16,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolderExt> {
-
+public class RecyclerViewAdapter extends RecyclerView.Adapter {
+    private final static int VIEW_TYPE_NORMAL = 0;
+    private final static int VIEW_TYPE_PROGRESS = 1;
     private List<Item> mItemList;
 
     public RecyclerViewAdapter(List<Item> itemList) {
@@ -24,21 +26,40 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public RecyclerViewAdapter.ViewHolderExt onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.content_main_item, null);
-        return new ViewHolderExt(view);
+        if(VIEW_TYPE_NORMAL == viewType) {
+            View view = LayoutInflater.from(context).inflate(R.layout.content_main_item, null);
+            return new ViewHolderExt(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.content_main_item_progress, null);
+            return new FooterViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewAdapter.ViewHolderExt holder, int position) {
-        Context context = holder.contentIv.getContext();
-        Glide.with(context).load(mItemList.get(position).image).into(holder.contentIv);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof ViewHolderExt) {
+            ViewHolderExt viewHolder = (ViewHolderExt) holder;
+            Context context = viewHolder.contentIv.getContext();
+            Glide.with(context).load(mItemList.get(position).image).into(viewHolder.contentIv);
+        } else {
+            ((FooterViewHolder) holder).mProgressBar.setIndeterminate(true);
+        }
     }
 
     @Override
     public int getItemCount() {
         return mItemList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(mItemList.get(position) instanceof Item) {
+            return VIEW_TYPE_NORMAL;
+        } else {
+            return VIEW_TYPE_PROGRESS;
+        }
     }
 
     final static class ViewHolderExt extends RecyclerView.ViewHolder {
@@ -47,8 +68,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolderExt(View itemView) {
             super(itemView);
-            contentIv = (ImageView) itemView.findViewById(R.id.content_imageview);
-            //ButterKnife.bind(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    final static class FooterViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.footer)
+        ProgressBar mProgressBar;
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
