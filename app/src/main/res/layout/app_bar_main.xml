@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/coordinator"
     tools:context="com.tistory.ovso.m1test.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -28,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@android:drawable/ic_dialog_email"
+        app:layout_behavior="com.tistory.ovso.m1test.ShrinkBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

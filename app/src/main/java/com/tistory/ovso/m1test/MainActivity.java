@@ -1,7 +1,9 @@
 package com.tistory.ovso.m1test;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
@@ -61,6 +64,13 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @BindView(R.id.coordinator)
+    CoordinatorLayout mCoordinator;
+
+    @OnClick(R.id.fab)
+    void onFloatingActionClick() {
+        Snackbar.make(mCoordinator, "Thank you!", Snackbar.LENGTH_LONG).show();
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
