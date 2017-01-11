@@ -45,7 +45,7 @@ public class MainPresenterImpl implements MainPresenter {
     @Override
     public void onRecyclerViewLoadMore() {
         int pageCount = mModel.getPageCount();
-        if(pageCount < 3) mInteractor.execute(pageCount, true);
+        if(pageCount < 4) mInteractor.execute(pageCount, true);
     }
 
     @Override
