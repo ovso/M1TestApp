@@ -51,6 +51,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void removeItem() {
+        mItemList.clear();
+    }
+
     final static class ViewHolderExt extends RecyclerView.ViewHolder {
         @BindView(R.id.content_imageview)
         ImageView contentIv;

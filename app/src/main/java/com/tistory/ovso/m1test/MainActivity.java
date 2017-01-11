@@ -61,9 +61,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout mRefreshLayout;
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -142,8 +139,11 @@ public class MainActivity extends AppCompatActivity
         //mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout mRefreshLayout;
+
     @Override
-    public void setEvent() {
+    public void setEventListener() {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @DebugLog
             @Override
@@ -155,12 +155,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showRefresh() {
-        mRefreshLayout.setEnabled(true);
+        mRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideRefresh() {
-        mRefreshLayout.setEnabled(false);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void clearRecyclerView() {
+        mRecyclerViewAdapter.removeItem();
+        mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override

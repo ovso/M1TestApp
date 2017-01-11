@@ -38,7 +38,7 @@ public class MainPresenterImpl implements MainPresenter {
         mView.setRootView();
         mView.setToolbar();
         mView.setDrawerLayout();
-        mView.setEvent();
+        mView.setEventListener();
         mInteractor.execute(mModel.getPageCount(), false);
     }
 
@@ -51,6 +51,8 @@ public class MainPresenterImpl implements MainPresenter {
     @Override
     public void onSwipeRefresh() {
         mView.showRefresh();
-        mInteractor.execute(1, false);
+        mView.clearRecyclerView();
+        mModel.clearPageCount();
+        mInteractor.execute(mModel.getPageCount(), false);
     }
 }

@@ -24,10 +24,12 @@ public interface MainPresenter {
 
         void updateRecyclerView(List<Item> item);
 
-        void setEvent();
+        void setEventListener();
 
         void showRefresh();
 
         void hideRefresh();
+
+        void clearRecyclerView();
     }
 }

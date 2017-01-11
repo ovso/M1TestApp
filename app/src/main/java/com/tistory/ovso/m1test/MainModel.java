@@ -21,4 +21,7 @@ class MainModel {
     public List<Item> getItemList() {
         return mItemList;
     }
+    public void clearPageCount() {
+        mPageCount = 0;
+    }
 }
