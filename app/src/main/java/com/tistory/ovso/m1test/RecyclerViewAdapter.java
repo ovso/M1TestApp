@@ -34,7 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolderExt viewHolder = (ViewHolderExt) holder;
         Context context = viewHolder.contentIv.getContext();
-        Item item = (Item) mItemList.get(position);
+        Item item = mItemList.get(position);
         Glide.with(context).load(item.image).into(viewHolder.contentIv);
     }
 
@@ -50,7 +50,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     final static class ViewHolderExt extends RecyclerView.ViewHolder {
         @BindView(R.id.content_imageview)
         ImageView contentIv;
-
         public ViewHolderExt(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

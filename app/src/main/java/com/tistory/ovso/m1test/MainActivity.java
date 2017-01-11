@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.OvershootInterpolator;
 
 import com.tistory.ovso.m1test.model.Item;
 
@@ -21,6 +21,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View{
@@ -95,16 +97,20 @@ public class MainActivity extends AppCompatActivity
         GridLayoutManager layout = new GridLayoutManager(this, 3);
         layout.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layout);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(itemList);
         mRecyclerView.addOnScrollListener(new EndlessRecyclerScrollListener(layout) {
             @Override
             public void onLoadMore() {
                 mPresenter.onRecyclerViewLoadMore();
             }
         });
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerViewAdapter = new RecyclerViewAdapter(itemList);
+        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mRecyclerViewAdapter);
+        scaleAdapter.setDuration(1000);
+        scaleAdapter.setFirstOnly(false);
+        //aniAdapter.setInterpolator(new OvershootInterpolator());
+        mRecyclerView.setAdapter(scaleAdapter);
     }
-
+    private RecyclerViewAdapter mRecyclerViewAdapter;
     private Unbinder mUnbinder;
     @Override
     public void setRootView() {
@@ -134,9 +140,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateRecyclerView(List<Item> item) {
-        RecyclerViewAdapter adapter = (RecyclerViewAdapter) mRecyclerView.getAdapter();
-        adapter.setUpdateList(item);
-        adapter.notifyDataSetChanged();
+        mRecyclerViewAdapter.setUpdateList(item);
+        mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override

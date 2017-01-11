@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <ImageView
         android:id="@+id/content_imageview"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:scaleType="fitXY"/>
-
-</LinearLayout>
+        android:scaleType="fitXY"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground"
+        android:background="?android:selectableItemBackground"/>
+</FrameLayout>
