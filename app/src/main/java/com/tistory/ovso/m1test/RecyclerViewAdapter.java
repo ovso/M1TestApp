@@ -44,7 +44,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     public void setUpdateList(List<Item> item) {
-        mItemList.addAll(item);
+        //mItemList.addAll(item);
+        for (Item item1 : item) {
+            mItemList.add(item1);
+            notifyItemInserted(mItemList.indexOf(item1));
+        }
     }
 
     final static class ViewHolderExt extends RecyclerView.ViewHolder {

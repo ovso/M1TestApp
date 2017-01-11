@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.OvershootInterpolator;
 
 import com.tistory.ovso.m1test.model.Item;
 
@@ -21,8 +20,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View{
@@ -107,7 +106,6 @@ public class MainActivity extends AppCompatActivity
         ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mRecyclerViewAdapter);
         scaleAdapter.setDuration(1000);
         scaleAdapter.setFirstOnly(false);
-        //aniAdapter.setInterpolator(new OvershootInterpolator());
         mRecyclerView.setAdapter(scaleAdapter);
     }
     private RecyclerViewAdapter mRecyclerViewAdapter;
@@ -141,18 +139,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void updateRecyclerView(List<Item> item) {
         mRecyclerViewAdapter.setUpdateList(item);
-        mRecyclerViewAdapter.notifyDataSetChanged();
+        //mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void setEvent() {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @DebugLog
             @Override
             public void onRefresh() {
                 mPresenter.onSwipeRefresh();
             }
         });
-
     }
 
     @Override
