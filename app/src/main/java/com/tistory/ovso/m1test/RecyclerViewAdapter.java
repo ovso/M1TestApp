@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter {
     private List<Item> mItemList = new ArrayList<>();
@@ -29,13 +30,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         View view = LayoutInflater.from(context).inflate(R.layout.content_main_item, null);
         return new ViewHolderExt(view);
     }
-
+    private View.OnClickListener mOnClickListener;
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
+    }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolderExt viewHolder = (ViewHolderExt) holder;
         Context context = viewHolder.contentIv.getContext();
         Item item = mItemList.get(position);
         Glide.with(context).load(item.image).into(viewHolder.contentIv);
+        viewHolder.onClickListener = mOnClickListener;
+
     }
 
     @Override
@@ -44,7 +50,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     public void setUpdateList(List<Item> item) {
-        //mItemList.addAll(item);
         for (Item item1 : item) {
             mItemList.add(item1);
             notifyItemInserted(mItemList.indexOf(item1));
@@ -58,9 +63,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     final static class ViewHolderExt extends RecyclerView.ViewHolder {
         @BindView(R.id.content_imageview)
         ImageView contentIv;
+        View.OnClickListener onClickListener;
         public ViewHolderExt(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.content_imageview)
+        void onItemClick() {
+            onClickListener.onClick(null);
         }
     }
 

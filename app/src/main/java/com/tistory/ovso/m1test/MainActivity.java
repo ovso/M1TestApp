@@ -1,9 +1,12 @@
 package com.tistory.ovso.m1test;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,7 +17,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.tistory.ovso.m1test.me.MeActivity;
 import com.tistory.ovso.m1test.model.Item;
 
 import java.util.List;
@@ -27,7 +32,7 @@ import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View{
+        implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View {
 
     private MainPresenter mPresenter;
 
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity
     void onFloatingActionClick() {
         Snackbar.make(mCoordinator, "Thank you!", Snackbar.LENGTH_LONG).show();
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -95,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
@@ -110,13 +117,31 @@ public class MainActivity extends AppCompatActivity
             }
         });
         mRecyclerViewAdapter = new RecyclerViewAdapter(itemList);
+        mRecyclerViewAdapter.setOnClickListener(mOnRecyclerViewItemClickListener);
         ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mRecyclerViewAdapter);
         scaleAdapter.setDuration(1000);
         scaleAdapter.setFirstOnly(false);
         mRecyclerView.setAdapter(scaleAdapter);
     }
+
+    private View.OnClickListener mOnRecyclerViewItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            navigateToMe();
+        }
+    };
+
+    @DebugLog
+    private void navigateToMe() {
+        Intent intent = new Intent(MainActivity.this, MeActivity.class);
+        final Pair<View, String>[] pairs = TransitionHelper.createSafeTransitionParticipants(this, true);
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairs);
+        startActivity(intent, transitionActivityOptions.toBundle());
+    }
+
     private RecyclerViewAdapter mRecyclerViewAdapter;
     private Unbinder mUnbinder;
+
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_main);
